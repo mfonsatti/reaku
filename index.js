@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
-const stripe = require("stripe")("sk_test_O5gM792YabwAKmO8d9l6xzT800KCQuCrYE");
+const env = require("dotenv").config({ path: "./.env" });
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -17,6 +18,28 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.post("/getCustomerByEmail", (req, res) => {
     stripe.customers.list({ limit: 1, email: req.body.email }, (err, customers) => res.send(customers));
 });
+
+app.get("/publicKey", (req, res) => {
+    res.send({ publicKey: process.env.STRIPE_PUBLIC_KEY });
+  });
+
+app.post("/createPaymentIntent", async (req, res) => {
+    const body = req.body;
+    const productDetails = getProductDetails();
+  
+    const options = {
+      ...body,
+      amount: productDetails.amount,
+      currency: productDetails.currency
+    };
+  
+    try {
+      const paymentIntent = await stripe.paymentIntents.create(options);
+      res.json(paymentIntent);
+    } catch (err) {
+      res.json(err);
+    }
+  });
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
