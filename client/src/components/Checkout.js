@@ -1,15 +1,8 @@
 import React from "react";
-import { Elements } from "react-stripe-elements";
-import InjectedCheckoutForm from './CheckoutForm';
-
-import axios from "axios";
+import CheckoutForm from "./CheckoutForm";
 
 const Checkout = () => {
-  return (
-    <Elements>
-      <InjectedCheckoutForm/>
-    </Elements>
-  );
+    return <CheckoutForm />;
 };
 
-export default injectStripe(Checkout);
+export default Checkout;

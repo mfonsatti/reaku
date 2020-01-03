@@ -19,27 +19,37 @@ app.post("/getCustomerByEmail", (req, res) => {
     stripe.customers.list({ limit: 1, email: req.body.email }, (err, customers) => res.send(customers));
 });
 
-app.get("/publicKey", (req, res) => {
-    res.send({ publicKey: process.env.STRIPE_PUBLIC_KEY });
+app.get("/getStripePublicKey", (req, res) => {
+    res.send({ stripePublicKey: process.env.STRIPE_PUBLIC_KEY });
+});
+
+app.post("/createCustomer", (req, res) => {
+  stripe.customers.create(req.body, (err, customers) => {
+      if (err) {
+          console.log("err", err);
+      }
+      res.send(customers);
   });
+});
+
+app.post("/updateCustomer", (req, res) => {
+    stripe.customers.update(req.body.customerId, { phone: req.body.phone }, (err, customers) => {
+        if (err) {
+            console.log("err", err);
+        }
+        console.log(customers)
+        res.send(customers);
+    });
+});
 
 app.post("/createPaymentIntent", async (req, res) => {
-    const body = req.body;
-    const productDetails = getProductDetails();
-  
-    const options = {
-      ...body,
-      amount: productDetails.amount,
-      currency: productDetails.currency
-    };
-  
     try {
-      const paymentIntent = await stripe.paymentIntents.create(options);
-      res.json(paymentIntent);
+        const paymentIntent = await stripe.paymentIntents.create(req.body);
+        res.json(paymentIntent);
     } catch (err) {
-      res.json(err);
+        res.json(err);
     }
-  });
+});
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
@@ -50,4 +60,4 @@ app.get("*", (req, res) => {
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log(`Password generator listening on ${port}`);
+console.log(`Server listening on ${port}`);

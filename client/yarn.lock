@@ -19,6 +19,13 @@
   resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.3.19.tgz#1b54b4a61dca6157f3bfcd4f348855187d67d51f"
   integrity sha512-8bskLEkiDvuZztnfGN+vM56q2HQV8dyXS/Eb0nhXPx6fonii3hQLxfNVA2r5NTMbvEkwDo59bAau3idUXaGvww==
 
+"@stripe/react-stripe-js@^7.0.0-beta.1":
+  version "7.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-7.0.0-beta.1.tgz#691d6ba197506d44a7b5b10f1297b4a1eedf02ce"
+  integrity sha512-LxOs1R9tcnx9Kum+mTJLR2VDxez9Jsk3M3x0oRScJZ3K05lCVJIx7dBQy2/u9tb5jrUHVHkcz9U8aGn8PD0OHA==
+  dependencies:
+    prop-types "^15.7.2"
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"

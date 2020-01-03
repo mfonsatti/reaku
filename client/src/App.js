@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { StripeProvider } from "react-stripe-elements";
+import { Elements } from "@stripe/react-stripe-js";
 import Checkout from "./components/Checkout";
+import axios from "axios";
 
 export default function App() {
-  const [stripePublicKey, setStripePublicKey] = useState("");
+    const [stripe, setStripe] = useState(null);
 
-  useEffect(async () => {
-    setStripePublicKey(
-      await axios
-        .get("/getStripePublicKey")
-        .then(() => response.stripePublicKey)
+    useEffect(() => {
+        if (window.Stripe && !stripe) {
+            getStripePublicKey().then(response => setStripe(window.Stripe(response)));
+        }
+    });
+
+    const getStripePublicKey = async () => {
+        const response = await axios.get("/getStripePublicKey");
+        return response.data.stripePublicKey;
+    };
+
+    return (
+        <Elements stripe={stripe}>
+            <Checkout />
+        </Elements>
     );
-  });
-  return (
-    <StripeProvider apiKey={stripePublicKey}>
-      <Checkout />
-    </StripeProvider>
-  );
 }
